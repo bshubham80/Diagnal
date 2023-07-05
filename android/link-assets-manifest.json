@@ -1,0 +1,73 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/Back.png",
+      "sha1": "35a814d1da8f51785d4eef6f379cb59b973a4751"
+    },
+    {
+      "path": "assets/fonts/TitilliumWebBold.ttf",
+      "sha1": "1de05d92173edf1cf44696d3c8a5842ebbf1e75f"
+    },
+    {
+      "path": "assets/fonts/TitilliumWebLight.ttf",
+      "sha1": "401ed0b1b7d9da4ee730467bcf4fcac8167f7993"
+    },
+    {
+      "path": "assets/fonts/TitilliumWebRegular.ttf",
+      "sha1": "c1d91bd86751bd0a186ac0323dcf47de4d0c0981"
+    },
+    {
+      "path": "assets/fonts/TitilliumWebSemiBold.ttf",
+      "sha1": "3ec2a03e4f87634460200b350ba7fdb8cc37934f"
+    },
+    {
+      "path": "assets/nav_bar.png",
+      "sha1": "002c02c29c079477ccd750827ba41b03d4345516"
+    },
+    {
+      "path": "assets/placeholder_for_missing_posters.png",
+      "sha1": "ba2139889cf9d41ff73aec8b41fcc8583f746123"
+    },
+    {
+      "path": "assets/poster1.jpg",
+      "sha1": "8ca69ba07ec136670e64c87cd304c033ddd2d238"
+    },
+    {
+      "path": "assets/poster2.jpg",
+      "sha1": "274e3d05aac92bf6d872da309913f298718da52f"
+    },
+    {
+      "path": "assets/poster3.jpg",
+      "sha1": "f0f28cb4886ec36f2740b51d16173d0a3073080c"
+    },
+    {
+      "path": "assets/poster4.jpg",
+      "sha1": "1bf1d6f21517778f7f97910ecf799ae03fa83388"
+    },
+    {
+      "path": "assets/poster5.jpg",
+      "sha1": "56a88c8a805da1945f8489a7063e068cba7e4f11"
+    },
+    {
+      "path": "assets/poster6.jpg",
+      "sha1": "aabf8c2a7189af09eeb8fd744eccddb80812eb4e"
+    },
+    {
+      "path": "assets/poster7.jpg",
+      "sha1": "a2bd26704c8acf40aa76aa0bd54e60eb2dc9fb51"
+    },
+    {
+      "path": "assets/poster8.jpg",
+      "sha1": "298d5f899fb01593f0f8de68a97a23a817d860fd"
+    },
+    {
+      "path": "assets/poster9.jpg",
+      "sha1": "59e20bc2f40f08842d2e1e511f628f72984ec3da"
+    },
+    {
+      "path": "assets/search.png",
+      "sha1": "16ee2dd3bc6868d4ba5e70534b138287cb003083"
+    }
+  ]
+}

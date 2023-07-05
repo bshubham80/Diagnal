@@ -1,34 +1,156 @@
-import React, {useCallback} from 'react';
-import {View, Button, StyleSheet} from 'react-native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {
+  StyleSheet,
+  FlatList,
+  ListRenderItem,
+  useWindowDimensions,
+  Dimensions,
+} from 'react-native';
 
-import {MainStackScreen, MainStackScreenName} from '@typings/router';
+import {CachedPoster} from '../../components/Poster';
+import {PAGE1, PAGE2, PAGE3} from '../../utils/dummyData';
+import {ImageSource} from '../../utils/imageSource';
+import {HeaderWithSearchBar} from '../../components/HeaderWithSearchBar';
 
-export const Home: React.FC<MainStackScreen<'Home'>> = ({navigation}) => {
-  const navigate = useCallback(
-    (path: MainStackScreenName) => () => {
-      navigation.navigate(path);
-    },
-    [navigation],
+type P = {
+  'poster-image': string;
+  name: string;
+};
+
+const GUTTER_SIZE = 8;
+const NUM_OF_COLUMNS = 3;
+
+export const Home: React.FC = () => {
+  const {width} = useWindowDimensions();
+
+  const [contentData, setContentData] = useState<P[]>(
+    PAGE1.page['content-items'].content,
   );
+
+  const [filteredData, setFilteredData] = useState<P[]>([]);
+
+  const currentPage = useRef(1);
+
+  const maxHeight = useRef(0);
+
+  const searchText = useRef('');
+
+  const renderItem: ListRenderItem<P> = useCallback(
+    ({item}) => {
+      const w = Math.floor(
+        (width - GUTTER_SIZE * (NUM_OF_COLUMNS + 1)) / NUM_OF_COLUMNS,
+      );
+      return (
+        <CachedPoster
+          width={w}
+          name={item.name}
+          maxHeightRef={maxHeight}
+          source={ImageSource[item['poster-image']]}
+        />
+      );
+    },
+    [width],
+  );
+
+  const keyExtractor = useCallback(
+    (item: P, index: number) => `${item.name}-${item['poster-image']}-${index}`,
+    [],
+  );
+
+  const loadMoreContent = useCallback(() => {
+    if (currentPage.current === 3) {
+      return;
+    }
+
+    setContentData(prev => {
+      if (currentPage.current === 1) {
+        currentPage.current += 1;
+        return [
+          ...prev,
+          ...PAGE2.page['content-items'].content.filter(i => {
+            return i.name
+              .toLowerCase()
+              .includes(searchText.current.toLowerCase());
+          }),
+        ];
+      }
+      currentPage.current += 1;
+      return [
+        ...prev,
+        ...PAGE3.page['content-items'].content.filter(i => {
+          return i.name
+            .toLowerCase()
+            .includes(searchText.current.toLowerCase());
+        }),
+      ];
+    });
+  }, []);
+
+  const onSearch = useCallback(
+    (query: string) => {
+      searchText.current = query;
+      // Filter the content data based on the search query
+      const filteredResults = contentData.filter(item =>
+        item.name.toLowerCase().includes(query.toLowerCase()),
+      );
+      setFilteredData(filteredResults);
+    },
+    [contentData],
+  );
+
+  useEffect(() => {
+    const unsubs = Dimensions.addEventListener('change', u => {
+      // Reset the max height when the screen orientation changes
+      maxHeight.current = 0;
+    });
+
+    return () => {
+      unsubs.remove();
+    };
+  }, []);
+
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.button}>
-        <Button onPress={navigate('SwipeModal')} title="Swipe Modal" />
-      </View>
-      <View style={styles.button}>
-        <Button onPress={navigate('TabView')} title="Circular Tab View" />
-      </View>
-    </View>
+    <>
+      <FlatList
+        data={searchText.current ? filteredData : contentData}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        numColumns={NUM_OF_COLUMNS}
+        onEndReachedThreshold={0.5}
+        onEndReached={loadMoreContent}
+        showsVerticalScrollIndicator={false}
+        columnWrapperStyle={styles.columnWrapper}
+        contentContainerStyle={styles.contentContainerStyle}
+      />
+      <HeaderWithSearchBar title={PAGE1.page.title} onSearch={onSearch} />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  header: {
+    padding: 16,
+    flexDirection: 'row',
   },
-  button: {
-    margin: 16,
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  searchBar: {
+    height: 40,
+    backgroundColor: '#fff',
+    paddingHorizontal: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 4,
+  },
+  columnWrapper: {
+    marginBottom: 24,
+    justifyContent: 'space-between',
+  },
+  contentContainerStyle: {
+    paddingHorizontal: GUTTER_SIZE,
+    paddingTop: 72,
   },
 });
