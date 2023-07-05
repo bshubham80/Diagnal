@@ -99,7 +99,7 @@ export const Home: React.FC = () => {
   );
 
   useEffect(() => {
-    const unsubs = Dimensions.addEventListener('change', u => {
+    const unsubs = Dimensions.addEventListener('change', () => {
       // Reset the max height when the screen orientation changes
       maxHeight.current = 0;
     });
