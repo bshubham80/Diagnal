@@ -5,6 +5,7 @@ import {
   ListRenderItem,
   useWindowDimensions,
   Dimensions,
+  View,
 } from 'react-native';
 
 import {CachedPoster} from '../../components/Poster';
@@ -110,8 +111,9 @@ export const Home: React.FC = () => {
   }, []);
 
   return (
-    <>
+    <View testID="homeComponent">
       <FlatList
+        testID="flatList"
         data={searchText.current ? filteredData : contentData}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
@@ -123,7 +125,7 @@ export const Home: React.FC = () => {
         contentContainerStyle={styles.contentContainerStyle}
       />
       <HeaderWithSearchBar title={PAGE1.page.title} onSearch={onSearch} />
-    </>
+    </View>
   );
 };
 

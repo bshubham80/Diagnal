@@ -9,11 +9,12 @@ import {
 type P = {
   onPress: () => void;
   source: ImageSourcePropType;
+  testID?: string;
 };
 
-export const IconButton: React.FC<P> = ({source, onPress}) => {
+export const IconButton: React.FC<P> = ({source, onPress, testID}) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} testID={testID}>
       <Image source={source} style={styles.backIcon} resizeMode="center" />
     </TouchableOpacity>
   );

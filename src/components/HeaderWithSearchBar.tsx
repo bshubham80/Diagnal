@@ -5,6 +5,8 @@ import {
   ImageBackground,
   StatusBar,
   TextInput,
+  NativeSyntheticEvent,
+  TextInputSubmitEditingEventData,
 } from 'react-native';
 import {ImageSource} from '../utils/imageSource';
 import {Title} from './Title';
@@ -26,6 +28,15 @@ export const HeaderWithSearchBar: React.FC<P> = ({title, onSearch}) => {
     onSearch('');
   }, [onSearch]);
 
+  const onSubmitEditing = useCallback(
+    (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
+      if (e.nativeEvent.text.length > 2) {
+        onSearch(e.nativeEvent.text);
+      }
+    },
+    [onSearch],
+  );
+
   const renderHeaderElement = useCallback(() => {
     if (!showSearchBar) {
       return <Title>{title}</Title>;
@@ -35,13 +46,13 @@ export const HeaderWithSearchBar: React.FC<P> = ({title, onSearch}) => {
       <TextInput
         maxLength={50}
         style={styles.input}
-        placeholder="Enter poster name..."
         placeholderTextColor="#999999"
         underlineColorAndroid="#999999"
-        onSubmitEditing={e => onSearch(e.nativeEvent.text)}
+        onSubmitEditing={onSubmitEditing}
+        placeholder="Enter poster name..."
       />
     );
-  }, [onSearch, showSearchBar, title]);
+  }, [onSubmitEditing, showSearchBar, title]);
 
   return (
     <ImageBackground
@@ -49,9 +60,17 @@ export const HeaderWithSearchBar: React.FC<P> = ({title, onSearch}) => {
       style={styles.background}
       source={ImageSource.header}>
       <View style={styles.row}>
-        <IconButton onPress={onBackPress} source={ImageSource.back} />
+        <IconButton
+          testID="backButton"
+          onPress={onBackPress}
+          source={ImageSource.back}
+        />
         <View style={styles.titleContainer}>{renderHeaderElement()}</View>
-        <IconButton onPress={onPress} source={ImageSource.search} />
+        <IconButton
+          testID="searchButton"
+          onPress={onPress}
+          source={ImageSource.search}
+        />
       </View>
     </ImageBackground>
   );

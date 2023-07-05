@@ -44,8 +44,16 @@ export const Poster: React.FC<P> = ({source, name, width, maxHeightRef}) => {
 
   return (
     <View style={containerStyle}>
-      <Image source={source} style={imageStyle} resizeMode="cover" />
-      <Label style={styles.labelStyle} numberOfLines={1}>
+      <Image
+        source={source}
+        style={imageStyle}
+        resizeMode="cover"
+        testID="posterImage"
+      />
+      <Label
+        style={styles.labelStyle}
+        numberOfLines={1}
+        accessibilityLabel="posterName">
         {name}
       </Label>
     </View>
